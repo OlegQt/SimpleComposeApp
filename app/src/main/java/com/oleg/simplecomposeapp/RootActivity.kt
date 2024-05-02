@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +12,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -42,7 +44,7 @@ class RootActivity : ComponentActivity() {
             surname = "Brown",
             familyName = "Dostoevsky",
             imageRes = null,
-            isFavorite = false,
+            isFavorite = true,
             phone = "+800 224 00",
             address = "Moscow city",
             email = "null@mail.com",
@@ -80,7 +82,8 @@ class RootActivity : ComponentActivity() {
                 ShowContactName(
                     nameStr = newContact.name,
                     surnameStr = newContact.surname,
-                    familyNameStr = newContact.familyName
+                    familyNameStr = newContact.familyName,
+                    isFav = newContact.isFavorite
                 )
             }
 
@@ -97,7 +100,7 @@ class RootActivity : ComponentActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.5f)Jnj
+                    .weight(0.5f)
             ) {
             }
         }
@@ -164,7 +167,12 @@ class RootActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ShowContactName(nameStr: String, surnameStr: String?, familyNameStr: String) {
+    fun ShowContactName(
+        nameStr: String,
+        surnameStr: String?,
+        familyNameStr: String,
+        isFav: Boolean
+    ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -181,22 +189,34 @@ class RootActivity : ComponentActivity() {
             Row {
                 Text(
                     text = familyNameStr,
-                    modifier = Modifier.align(Alignment.CenterVertically),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(end = 4.dp),
                     color = Color.Black,
                     style = MaterialTheme.typography.headlineMedium
                 )
+                if (isFav) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_star_24),
+                        contentDescription = null,
+                        tint = Color.Yellow,
+                        modifier = Modifier.align(CenterVertically)
+                    )
+                }
             }
         }
     }
 
     @Composable
-    fun InfoRow(label:String,text:String?){
+    fun InfoRow(label: String, text: String?) {
         text?.let {
             Row(modifier = Modifier.padding(vertical = 16.dp)) {
-                Text(text = label,
+                Text(
+                    text = label,
                     Modifier
                         .weight(0.5f)
-                        .padding(end = 4.dp), textAlign = TextAlign.End)
+                        .padding(end = 4.dp), textAlign = TextAlign.End
+                )
                 Text(text = text, Modifier.weight(0.5f), textAlign = TextAlign.Start)
             }
         }
